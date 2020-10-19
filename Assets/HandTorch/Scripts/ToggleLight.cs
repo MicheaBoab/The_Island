@@ -17,13 +17,14 @@ public class ToggleLight : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (onOff)
+        /*if (onOff)
         {
             Spot1ight.SetActive(true);
         }
         else {
             Spot1ight.SetActive(false);
-        }
+        }*/
+        Spot1ight.SetActive(onOff);
         toggle();
     }
 

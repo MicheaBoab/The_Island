@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-
+    Camera cam;
     public CharacterController controller;
 
     public float moveSpeed = 15f;
@@ -23,7 +23,7 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        cam = Camera.main;
     }
 
     // Update is called once per frame
@@ -52,6 +52,23 @@ public class PlayerController : MonoBehaviour
 
         controller.Move(velocity * Time.deltaTime);
 
+
+        if (Input.GetKeyDown(KeyCode.L))
+        {
+            Ray ray = cam.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+
+            if (Physics.Raycast(ray, out hit, 100))
+            {
+                Interactable obj = hit.collider.GetComponent<Interactable>();
+                if (obj != null)
+                {
+                    //do something
+                    Debug.Log("Hit " + hit.collider.name);
+                        
+                }
+            }
+        }
 
     }
 }
