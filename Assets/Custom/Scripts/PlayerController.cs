@@ -19,8 +19,12 @@ public class PlayerController : MonoBehaviour
     Vector3 velocity;
     bool isGrounded;
 
-
+    bool carrying = false;
+    GameObject carriedObject;
+    public float objectDist = 2f;
+    public float objectOffset = 0.5f;
     // Start is called before the first frame update
+    
     void Start()
     {
         cam = Camera.main;
@@ -51,24 +55,59 @@ public class PlayerController : MonoBehaviour
         velocity.y += gravity * Time.deltaTime;
 
         controller.Move(velocity * Time.deltaTime);
-
-
-        if (Input.GetKeyDown(KeyCode.L))
+        if (carrying)
         {
-            Ray ray = cam.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hit;
-
-            if (Physics.Raycast(ray, out hit, 100))
+            Carry(carriedObject);
+        }
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            if (carrying)
             {
-                Interactable obj = hit.collider.GetComponent<Interactable>();
-                if (obj != null)
-                {
-                    //do something
-                    Debug.Log("Hit " + hit.collider.name);
-                        
-                }
+                Debug.Log("Pressed E while carrying");
+                Object.Destroy(carriedObject);
+            }
+
+            else
+            {
+                PickUp();
             }
         }
+       
 
+    }
+
+    void Carry(GameObject obj)
+    {
+        Rigidbody objRB = obj.GetComponent<Rigidbody>();
+        objRB.isKinematic = true;
+
+        obj.transform.position = cam.transform.position + (cam.transform.forward * objectDist) + (cam.transform.right * objectOffset) ;
+        obj.transform.rotation = Quaternion.Euler(90, 0, 0);
+        obj.transform.localScale = new Vector3(1, 1, 1);
+    }
+
+    void PickUp()
+    {
+       
+            int x = Screen.width / 2;
+            int y = Screen.height / 2;
+
+            Ray ray = cam.ScreenPointToRay(Input.mousePosition);
+
+            RaycastHit hit;
+
+            if (Physics.Raycast(ray, out hit))
+            {
+                Interactable obj = hit.collider.GetComponent<Interactable>();
+                obj.gameObject.GetComponent<MeshRenderer>().enabled = true;
+                if (obj != null)
+                {
+                    carrying = true;
+                    carriedObject = obj.gameObject;
+                    Debug.Log("Hit " + hit.collider.name);
+
+                }
+            }
+        
     }
 }
