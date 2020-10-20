@@ -19,7 +19,9 @@ public class PlayerController : MonoBehaviour
     Vector3 velocity;
     bool isGrounded;
 
-
+    bool carrying = false;
+    GameObject carriedObject;
+    public float objectDist = 2f;
     // Start is called before the first frame update
     void Start()
     {
@@ -52,23 +54,47 @@ public class PlayerController : MonoBehaviour
 
         controller.Move(velocity * Time.deltaTime);
 
-
-        if (Input.GetKeyDown(KeyCode.L))
+        if (carrying)
         {
-            Ray ray = cam.ScreenPointToRay(Input.mousePosition);
+            Carry(carriedObject);
+        } else
+        {
+            PickUp();
+        }
+       
+
+    }
+
+    void Carry(GameObject obj)
+    {
+        Rigidbody objRB = obj.GetComponent<Rigidbody>();
+        objRB.isKinematic = true;
+
+        obj.transform.position = cam.transform.position + cam.transform.forward * objectDist;
+    }
+
+    void PickUp()
+    {
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            int x = Screen.width / 2;
+            int y = Screen.height / 2;
+
+            Ray ray = cam.ScreenPointToRay(new Vector3(x, y));
+
             RaycastHit hit;
 
-            if (Physics.Raycast(ray, out hit, 100))
+            if (Physics.Raycast(ray, out hit))
             {
                 Interactable obj = hit.collider.GetComponent<Interactable>();
                 if (obj != null)
                 {
-                    //do something
+                    carrying = true;
+                    carriedObject = obj.gameObject;
                     Debug.Log("Hit " + hit.collider.name);
-                        
+
                 }
             }
         }
-
     }
 }
