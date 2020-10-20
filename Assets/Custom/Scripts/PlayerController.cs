@@ -22,7 +22,9 @@ public class PlayerController : MonoBehaviour
     bool carrying = false;
     GameObject carriedObject;
     public float objectDist = 2f;
+    public float objectOffset = 0.5f;
     // Start is called before the first frame update
+    
     void Start()
     {
         cam = Camera.main;
@@ -53,13 +55,22 @@ public class PlayerController : MonoBehaviour
         velocity.y += gravity * Time.deltaTime;
 
         controller.Move(velocity * Time.deltaTime);
-
         if (carrying)
         {
             Carry(carriedObject);
-        } else
+        }
+        if (Input.GetKeyDown(KeyCode.E))
         {
-            PickUp();
+            if (carrying)
+            {
+                Debug.Log("Pressed E while carrying");
+                Object.Destroy(carriedObject);
+            }
+
+            else
+            {
+                PickUp();
+            }
         }
        
 
@@ -70,23 +81,25 @@ public class PlayerController : MonoBehaviour
         Rigidbody objRB = obj.GetComponent<Rigidbody>();
         objRB.isKinematic = true;
 
-        obj.transform.position = cam.transform.position + cam.transform.forward * objectDist;
+        obj.transform.position = cam.transform.position + (cam.transform.forward * objectDist) + (cam.transform.right * objectOffset) ;
+        obj.transform.rotation = Quaternion.Euler(90, 0, 0);
+        obj.transform.localScale = new Vector3(1, 1, 1);
     }
 
     void PickUp()
     {
-        if (Input.GetKeyDown(KeyCode.E))
-        {
+       
             int x = Screen.width / 2;
             int y = Screen.height / 2;
 
-            Ray ray = cam.ScreenPointToRay(new Vector3(x, y));
+            Ray ray = cam.ScreenPointToRay(Input.mousePosition);
 
             RaycastHit hit;
 
             if (Physics.Raycast(ray, out hit))
             {
                 Interactable obj = hit.collider.GetComponent<Interactable>();
+                obj.gameObject.GetComponent<MeshRenderer>().enabled = true;
                 if (obj != null)
                 {
                     carrying = true;
@@ -95,6 +108,6 @@ public class PlayerController : MonoBehaviour
 
                 }
             }
-        }
+        
     }
 }
