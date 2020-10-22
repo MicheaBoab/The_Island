@@ -5,30 +5,46 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    Camera cam;
     public CharacterController controller;
 
-    public float moveSpeed = 15f;
+    public float moveSpeed = 5f;
     public float jumpHeight = 10f;
     public float gravity = Physics.gravity.y;
+
 
     public Transform groundCheck;
     public float groundDistance = 0.4f;
     public LayerMask groundMask;
-
-    Vector3 velocity;
     bool isGrounded;
 
 
+    Vector3 velocity;
+
+
+    AudioSource footstepSound;
+
+    [SerializeField]
+    AudioClip[] footstepClip;
+
+    public float minVolume, maxVolume;
+    float accumulatedDistance;
+    public float stepDistance;
+
+    private void Awake()
+    {
+        footstepSound = GetComponent<AudioSource>();
+
+    }
     // Start is called before the first frame update
     void Start()
     {
-        cam = Camera.main;
     }
 
     // Update is called once per frame
     void Update()
     {
+
+        Debug.Log("Velocity at start: " + controller.velocity.magnitude);
         isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
 
         if (isGrounded && velocity.y < 0)
@@ -49,26 +65,34 @@ public class PlayerController : MonoBehaviour
         }
 
         velocity.y += gravity * Time.deltaTime;
-
         controller.Move(velocity * Time.deltaTime);
 
+        PlayFootstepSound();
+        Debug.Log("Velocity at end: " + controller.velocity.magnitude);
+    }
 
-        if (Input.GetKeyDown(KeyCode.L))
+    void PlayFootstepSound()
+    {
+        /*if (!controller.isGrounded)
+            return;
+        */
+
+        if (controller.velocity.magnitude > 0)
         {
-            Ray ray = cam.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hit;
-
-            if (Physics.Raycast(ray, out hit, 100))
+            //Debug.Log("Velocity is"+ controller.velocity.magnitude);
+            accumulatedDistance += (velocity * Time.deltaTime).magnitude;
+            if(accumulatedDistance > stepDistance)
             {
-                Interactable obj = hit.collider.GetComponent<Interactable>();
-                if (obj != null)
-                {
-                    //do something
-                    Debug.Log("Hit " + hit.collider.name);
-                        
-                }
-            }
-        }
+                footstepSound.volume = Random.Range(minVolume, maxVolume);
+                footstepSound.clip = footstepClip[Random.Range(0, footstepClip.Length)];
+                footstepSound.Play();
 
+                accumulatedDistance = 0f;
+            }
+        }else
+        {
+            //Debug.Log("Velocity is 0");
+            accumulatedDistance = 0f;
+        }
     }
 }

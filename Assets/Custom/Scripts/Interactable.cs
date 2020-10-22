@@ -10,12 +10,4 @@ public class Interactable : MonoBehaviour {
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, radius);
     }
-    void Start() {
-        
-    }
-
-    // Update is called once per frame
-    void Update() {
-        
-    }
 }
