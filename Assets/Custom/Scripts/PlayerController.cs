@@ -5,34 +5,46 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    Camera cam;
     public CharacterController controller;
 
-    public float moveSpeed = 15f;
+    public float moveSpeed = 5f;
     public float jumpHeight = 10f;
     public float gravity = Physics.gravity.y;
+
 
     public Transform groundCheck;
     public float groundDistance = 0.4f;
     public LayerMask groundMask;
-
-    Vector3 velocity;
     bool isGrounded;
 
-    bool carrying = false;
-    GameObject carriedObject;
-    public float objectDist = 2f;
-    public float objectOffset = 0.5f;
+
+    Vector3 velocity;
+
+
+    AudioSource footstepSound;
+
+    [SerializeField]
+    AudioClip[] footstepClip;
+
+    public float minVolume, maxVolume;
+    float accumulatedDistance;
+    public float stepDistance;
+
+    private void Awake()
+    {
+        footstepSound = GetComponent<AudioSource>();
+
+    }
     // Start is called before the first frame update
-    
     void Start()
     {
-        cam = Camera.main;
     }
 
     // Update is called once per frame
     void Update()
     {
+
+        Debug.Log("Velocity at start: " + controller.velocity.magnitude);
         isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
 
         if (isGrounded && velocity.y < 0)
@@ -53,61 +65,34 @@ public class PlayerController : MonoBehaviour
         }
 
         velocity.y += gravity * Time.deltaTime;
-
         controller.Move(velocity * Time.deltaTime);
-        if (carrying)
-        {
-            Carry(carriedObject);
-        }
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            if (carrying)
-            {
-                Debug.Log("Pressed E while carrying");
-                Object.Destroy(carriedObject);
-            }
 
-            else
-            {
-                PickUp();
-            }
-        }
-       
-
+        PlayFootstepSound();
+        Debug.Log("Velocity at end: " + controller.velocity.magnitude);
     }
 
-    void Carry(GameObject obj)
+    void PlayFootstepSound()
     {
-        Rigidbody objRB = obj.GetComponent<Rigidbody>();
-        objRB.isKinematic = true;
+        /*if (!controller.isGrounded)
+            return;
+        */
 
-        obj.transform.position = cam.transform.position + (cam.transform.forward * objectDist) + (cam.transform.right * objectOffset) ;
-        obj.transform.rotation = Quaternion.Euler(90, 0, 0);
-        obj.transform.localScale = new Vector3(1, 1, 1);
-    }
-
-    void PickUp()
-    {
-       
-            int x = Screen.width / 2;
-            int y = Screen.height / 2;
-
-            Ray ray = cam.ScreenPointToRay(Input.mousePosition);
-
-            RaycastHit hit;
-
-            if (Physics.Raycast(ray, out hit))
+        if (controller.velocity.magnitude > 0)
+        {
+            //Debug.Log("Velocity is"+ controller.velocity.magnitude);
+            accumulatedDistance += (velocity * Time.deltaTime).magnitude;
+            if(accumulatedDistance > stepDistance)
             {
-                Interactable obj = hit.collider.GetComponent<Interactable>();
-                obj.gameObject.GetComponent<MeshRenderer>().enabled = true;
-                if (obj != null)
-                {
-                    carrying = true;
-                    carriedObject = obj.gameObject;
-                    Debug.Log("Hit " + hit.collider.name);
+                footstepSound.volume = Random.Range(minVolume, maxVolume);
+                footstepSound.clip = footstepClip[Random.Range(0, footstepClip.Length)];
+                footstepSound.Play();
 
-                }
+                accumulatedDistance = 0f;
             }
-        
+        }else
+        {
+            //Debug.Log("Velocity is 0");
+            accumulatedDistance = 0f;
+        }
     }
 }
