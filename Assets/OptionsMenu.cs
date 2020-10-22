@@ -9,6 +9,7 @@ public class OptionsMenu : MonoBehaviour
     public AudioMixer audioMixer;
 
     public Dropdown resolutionDropdown;
+    public Toggle fullScreenToggle;
     Resolution[] resolutions;
 
     private void Start()
@@ -31,6 +32,7 @@ public class OptionsMenu : MonoBehaviour
 
         resolutionDropdown.value = currentResolutionIndex;
         resolutionDropdown.RefreshShownValue();
+        //fullScreenToggle.isOn = Screen.fullScreen;
     }
     public void SetVolume(float volume)
     {
