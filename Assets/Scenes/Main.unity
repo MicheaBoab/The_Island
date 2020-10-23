@@ -2379,11 +2379,10 @@ MonoBehaviour:
   groundMask:
     serializedVersion: 2
     m_Bits: 0
-  footstepClip:
-  - {fileID: 8300000, guid: 44679df7e57d6fb4e9d1cf953f4f5dba, type: 3}
-  minVolume: 70
-  maxVolume: 80
-  stepDistance: 1
+  footstepClip: []
+  minVolume: 0
+  maxVolume: 0
+  stepDistance: 0
 --- !u!114 &879898673
 MonoBehaviour:
   m_ObjectHideFlags: 0
