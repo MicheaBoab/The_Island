@@ -746,8 +746,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 194919843}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 344.9586, y: -343.57532, z: -336.65524}
+  m_LocalRotation: {x: 0.11746755, y: 0.16455208, z: 0.019741122, w: -0.97914976}
+  m_LocalPosition: {x: 926.59247, y: -11.345075, z: 261.3109}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -2372,18 +2372,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   controller: {fileID: 879898668}
   moveSpeed: 25
-  jumpHeight: 1.5
+  jumpHeight: 6
   gravity: -9.81
-  groundCheck: {fileID: 828352350}
-  groundDistance: 0.1
-  groundMask:
-    serializedVersion: 2
-    m_Bits: 0
+  airSpeed: 4
+  airFriction: 0.65
   footstepClip:
   - {fileID: 8300000, guid: 44679df7e57d6fb4e9d1cf953f4f5dba, type: 3}
-  minVolume: 0
-  maxVolume: 0
-  stepDistance: 0
+  minVolume: 70
+  maxVolume: 80
+  stepDistance: 10
 --- !u!114 &879898673
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2407,8 +2404,8 @@ AudioSource:
   m_GameObject: {fileID: 879898667}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 24300002, guid: d49b6ef865b823f4597f2ef25fa294bc, type: 2}
+  m_audioClip: {fileID: 8300000, guid: 44679df7e57d6fb4e9d1cf953f4f5dba, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
