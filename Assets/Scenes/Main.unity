@@ -2379,7 +2379,8 @@ MonoBehaviour:
   groundMask:
     serializedVersion: 2
     m_Bits: 0
-  footstepClip: []
+  footstepClip:
+  - {fileID: 8300000, guid: 44679df7e57d6fb4e9d1cf953f4f5dba, type: 3}
   minVolume: 0
   maxVolume: 0
   stepDistance: 0
