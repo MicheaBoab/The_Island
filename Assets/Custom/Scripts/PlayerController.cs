@@ -107,9 +107,9 @@ public class PlayerController : MonoBehaviour
 
     void PlayFootstepSound()
     {
-        /*if (!controller.isGrounded)
+        if (!controller.isGrounded)
             return;
-        */
+        
 
         if (controller.velocity.magnitude > 0)
         {
