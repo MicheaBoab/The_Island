@@ -5,8 +5,8 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    [Header("Player Controller")]
     public CharacterController controller;
-
     public float moveSpeed = 5f;
     public float jumpHeight = 10f;
     public float gravity = Physics.gravity.y;
@@ -14,21 +14,12 @@ public class PlayerController : MonoBehaviour
     public float airSpeed = 2.0f;
     public float airFriction = 0.65f;
 
-
-    //public Transform groundCheck;
-    //public float groundDistance = 0.4f;
-    //public LayerMask groundMask;
-    //bool isGrounded;
-
-
-    //Vector3 velocity;
-
-
+    
     AudioSource footstepSound;
 
+    [Header("Sound Settings")]
     [SerializeField]
     AudioClip[] footstepClip;
-
     public float minVolume, maxVolume;
     float accumulatedDistance;
     public float stepDistance;
