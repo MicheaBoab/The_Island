@@ -4856,7 +4856,7 @@ Light:
   m_Shape: 0
   m_Color: {r: 0.627451, g: 0.32941177, b: 0.050980393, a: 1}
   m_Intensity: 1
-  m_Range: 10
+  m_Range: 25
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10
@@ -4918,7 +4918,7 @@ GameObject:
   - component: {fileID: 6043529819156646588}
   - component: {fileID: 6043529819156646585}
   m_Layer: 0
-  m_Name: torchbeta5
+  m_Name: LitTorch
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5004,7 +5004,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 122
+  m_Constraints: 10
   m_CollisionDetection: 0
 --- !u!64 &6043529819156646585
 MeshCollider:

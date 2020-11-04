@@ -7,8 +7,10 @@ public class PickupOjects : MonoBehaviour
     Camera cam;
     bool carrying = false;
     GameObject carriedObject;
-    public float objectDist = 2f;
+    public float objectDist = 0.5f;
+    public float objectHeight = 0.5f;
     public float objectOffset = 0.5f;
+    public GameObject torch;
 
     // Start is called before the first frame update
     void Start()
@@ -27,8 +29,10 @@ public class PickupOjects : MonoBehaviour
         {
             if (carrying)
             {
-                Debug.Log("Pressed E while carrying");
+                Debug.Log("Pressed E while carrying");                
                 Object.Destroy(carriedObject);
+                carrying = false;
+                carriedObject = null;
             }
 
             else
@@ -43,10 +47,10 @@ public class PickupOjects : MonoBehaviour
     {
         Rigidbody objRB = obj.GetComponent<Rigidbody>();
         objRB.isKinematic = true;
-
-        obj.transform.position = cam.transform.position + (cam.transform.forward * objectDist) + (cam.transform.right * objectOffset);
-        obj.transform.rotation = Quaternion.Euler(90, 0, 0);
-        obj.transform.localScale = new Vector3(1, 1, 1);
+        Debug.Log("Transform: " + obj.transform.position);
+        obj.transform.position = cam.transform.position + (cam.transform.forward * objectDist) + (cam.transform.right * objectOffset) - (cam.transform.up *objectHeight);
+        obj.transform.rotation = Quaternion.Euler(-90f, 0, 0);
+        obj.transform.localScale = new Vector3(0.15f, 0.15f, 0.15f);
     }
 
     void PickUp()
@@ -61,14 +65,19 @@ public class PickupOjects : MonoBehaviour
 
         if (Physics.Raycast(ray, out hit))
         {
-            Interactable obj = hit.collider.GetComponent<Interactable>();
-            obj.gameObject.GetComponent<MeshRenderer>().enabled = true;
-            if (obj != null)
-            {
-                carrying = true;
-                carriedObject = obj.gameObject;
-                Debug.Log("Hit " + hit.collider.name);
+            Debug.Log(hit.distance);
+            if(hit.distance < 10f) {
+                GameObject obj = Instantiate(torch) as GameObject;
+                obj.GetComponent<MeshCollider>().enabled = false;
+                //Interactable obj = hit.collider.GetComponent<Interactable>();
+                //obj.gameObject.GetComponent<MeshRenderer>().enabled = true;
+                if (obj != null)
+                {
+                    carrying = true;
+                    carriedObject = obj;
+                    //Debug.Log("Hit " + hit.collider.name);
 
+                }
             }
         }
 

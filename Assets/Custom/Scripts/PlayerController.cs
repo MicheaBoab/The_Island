@@ -87,7 +87,7 @@ public class PlayerController : MonoBehaviour
 
         jumpVelocity.y += gravity * Time.deltaTime;
         movement += jumpVelocity;
-        Debug.Log(movement);
+        //Debug.Log(movement);
         controller.Move(movement * Time.deltaTime);
 
         /********************************/
@@ -106,7 +106,7 @@ public class PlayerController : MonoBehaviour
         {
             //Debug.Log("Velocity is"+ controller.velocity.magnitude);
             accumulatedDistance += (controller.velocity * Time.deltaTime).magnitude;
-            Debug.Log(accumulatedDistance);
+            //Debug.Log(accumulatedDistance);
             if (accumulatedDistance > stepDistance)
             {
                 footstepSound.volume = Random.Range(minVolume, maxVolume);
