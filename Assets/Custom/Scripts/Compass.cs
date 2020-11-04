@@ -10,11 +10,16 @@ public class Compass : MonoBehaviour
     public Transform player;
     public Text CompassText;
 
-    public
+    public GameObject iconPrefab;
+    //[SerializeField]
+    List<POIMarker> markers = new List<POIMarker>();
+    public POIMarker campsite;
+    float compassUnit;
     // Start is called before the first frame update
     void Start()
     {
-        
+        compassUnit = compassImage.rectTransform.rect.width / 360f;
+        AddMarker(campsite);
     }
 
     // Update is called once per frame
@@ -23,6 +28,15 @@ public class Compass : MonoBehaviour
         compassImage.uvRect = new Rect(player.localEulerAngles.y / 360, 0, 1, 1);
         Vector3 forward = player.transform.forward;
         forward.y = 0;
+
+
+        foreach(POIMarker marker in markers)
+        {
+            marker.image.rectTransform.anchoredPosition = getPositionOnCompass(marker);
+        }
+
+
+
 
         float headingAngle = Quaternion.LookRotation(forward).eulerAngles.y;
         headingAngle = 5 * (Mathf.RoundToInt(headingAngle / 5f));
@@ -64,5 +78,23 @@ public class Compass : MonoBehaviour
 
         }
 
+    }
+
+    public void AddMarker(POIMarker marker)
+    {
+        GameObject newMarker = Instantiate(iconPrefab, compassImage.transform);
+        marker.image = newMarker.GetComponent<Image>();
+        marker.image.sprite = marker.icon;
+
+        markers.Add(marker);
+    }
+
+    Vector2 getPositionOnCompass(POIMarker marker)
+    {
+        Vector2 playerPosition = new Vector2(player.transform.position.x, player.transform.position.z);
+        Vector2 playerFwd = new Vector2(player.transform.forward.x, player.transform.forward.z);
+
+        float angle = Vector2.SignedAngle(marker.position - playerPosition, playerFwd);
+        return new Vector2(compassUnit * angle, 0f);
     }
 }
