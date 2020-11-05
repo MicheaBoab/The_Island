@@ -67,6 +67,7 @@ public class PickupOjects : MonoBehaviour
         {
             Debug.Log(hit.distance);
             if(hit.distance < 10f) {
+                Debug.Log("Collider"+hit.collider);
                 GameObject obj = Instantiate(torch) as GameObject;
                 obj.GetComponent<MeshCollider>().enabled = false;
                 //Interactable obj = hit.collider.GetComponent<Interactable>();
