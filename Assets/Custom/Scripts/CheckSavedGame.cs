@@ -10,14 +10,17 @@ public class CheckSavedGame : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        string path = Application.persistentDataPath + "saves/game.save";
-        Debug.Log(Application.persistentDataPath);
+        string path = Application.persistentDataPath + "/saves/game.save";
+        Debug.Log("File Path: " + path);
+        Debug.Log("Exists check: " + (File.Exists(path)));
         if (File.Exists(path))
         {
+            Debug.Log("Resume Button Enabled!");
             resumeButton.SetActive(true);
         }
         else
         {
+            Debug.Log("Resume Button Disabled!");
             resumeButton.SetActive(false);
         }
     }

@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class PauseMenu : MonoBehaviour
 {
+    public PlayerController player;
     public static bool isPaused = false;
     public GameObject pauseMenuUI;
     // Start is called before the first frame update
@@ -53,6 +54,12 @@ public class PauseMenu : MonoBehaviour
 
     public void Quit()
     {
+
+        PlayerData save = new PlayerData(player);
+        Debug.Log("Exit button Pressed");
+        bool saved = SerializationManager.Save(save);
+        Debug.Log("Savestate" + saved);
+
         Application.Quit();
     }
 
