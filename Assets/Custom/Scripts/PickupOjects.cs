@@ -5,7 +5,7 @@ using UnityEngine;
 public class PickupOjects : MonoBehaviour
 {
     Camera cam;
-    bool carrying = false;
+    public bool carrying = false;
     GameObject carriedObject;
     public float objectDist = 0.5f;
     public float objectHeight = 0.5f;
