@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    public Transform playerTransform;
+
     [Header("Player Controller")]
     public CharacterController controller;
     public float moveSpeed = 5f;
@@ -121,5 +123,12 @@ public class PlayerController : MonoBehaviour
             //Debug.Log("Velocity is 0");
             accumulatedDistance = 0f;
         }
+    }
+
+    public void LoadData(Vector3 position, Quaternion rotation)
+    {
+        playerTransform.position = position;
+        playerTransform.rotation = rotation;
+        Debug.Log("Setting Transform in PLayerController");
     }
 }

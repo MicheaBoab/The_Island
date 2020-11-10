@@ -7,7 +7,7 @@ public class SaveData
 {
 
     private static SaveData _current;
-    private static SaveData current
+    public static SaveData current
     {
         get
         {
@@ -21,6 +21,7 @@ public class SaveData
     }
 
 
-    public PlayerData Data;
+    public Vector3 playerPosition;
+    public Quaternion playerRotation;
 
 }

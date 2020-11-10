@@ -48,19 +48,25 @@ public class PauseMenu : MonoBehaviour
 
     public void LoadMenu()
     {
-        
+        bool saved = Save();
+        Debug.Log("Savestate" + saved);
         SceneManager.LoadScene("Menu");
     }
 
     public void Quit()
     {
-
-        PlayerData save = new PlayerData(player);
-        Debug.Log("Exit button Pressed");
-        bool saved = SerializationManager.Save(save);
+        bool saved = Save();
         Debug.Log("Savestate" + saved);
 
         Application.Quit();
+    }
+
+    bool Save()
+    {
+        SaveData.current.playerPosition = player.controller.transform.position;
+        SaveData.current.playerRotation = player.controller.transform.rotation;
+
+        return SerializationManager.Save(SaveData.current);
     }
 
 }

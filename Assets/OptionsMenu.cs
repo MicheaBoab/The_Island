@@ -32,7 +32,7 @@ public class OptionsMenu : MonoBehaviour
 
         resolutionDropdown.value = currentResolutionIndex;
         resolutionDropdown.RefreshShownValue();
-        //fullScreenToggle.isOn = Screen.fullScreen;
+        fullScreenToggle.isOn = Screen.fullScreen;
     }
     public void SetVolume(float volume)
     {
